@@ -17,9 +17,10 @@ class SignInScreen extends StatefulWidget{
     @override
     Widget build(BuildContext context) {
       return Scaffold(
-        key: _formKey,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Form(
+          key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -28,9 +29,9 @@ class SignInScreen extends StatefulWidget{
                 child: Image.asset('assets/images/flutter-logo.png'),
               ),
               Elements.spacer15,
-              textField("Email:"),
+              textField(text: "Email:", validateEmail: true),
               Elements.spacer15,
-              textField("Password:"),
+              textField(text: "Password:", validatePassword: true),
               Elements.spacer,
               Row(
                 children: <Widget>[
@@ -60,25 +61,14 @@ class SignInScreen extends StatefulWidget{
                     child: ElevatedButton(
                       onPressed: (){
                         final isValid = _formKey.currentState?.validate();
-
                         if (isValid == true){
                           showDialog(
                               context: context,
                               builder: (BuildContext ctx){
                                 return const AlertDialog(
-                                  title: Text("wowow"),
+                                  title: Text("Successful login!"),
                                 );
                               },
-                          );
-                        }
-                        else{
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext ctx){
-                              return const AlertDialog(
-                                title: Text("wowwsa"),
-                              );
-                            },
                           );
                         }
                       },
@@ -125,6 +115,7 @@ class SignInScreen extends StatefulWidget{
               ),
             ],
           ),
+        ),
         ),
       );
     }

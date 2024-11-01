@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:lab08_09/elements_func.dart';
 
-class ResetPasswordScreen extends StatelessWidget with Elements{
+class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key});
+
+  @override
+  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
+}
+
+  class _ResetPasswordScreenState extends State<ResetPasswordScreen> with Elements{
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Form(
+          key: _formKey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -25,22 +35,24 @@ class ResetPasswordScreen extends StatelessWidget with Elements{
               ),
             ),
             Elements.spacer15,
-            textField("Email:"),
+            textField(text: "Email", validateEmail: true),
             Elements.spacer,
             Row(
               children: <Widget>[
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () => {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext ctx) {
-                          return const AlertDialog(
-                            title: Text('Message'),
-                            content: Text("Need to implement"),
-                          );
-                        },
-                      )
+                    onPressed: (){
+                      final isValid = _formKey.currentState?.validate();
+                      if (isValid == true){
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext ctx){
+                            return const AlertDialog(
+                              title: Text("Check your email to reset password"),
+                            );
+                          },
+                        );
+                      }
                     },
                     child: const Text(
                       "Reset",
@@ -59,6 +71,7 @@ class ResetPasswordScreen extends StatelessWidget with Elements{
             ),
           ],
         ),
+      ),
       ),
     );
   }

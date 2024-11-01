@@ -4,7 +4,7 @@ mixin Elements{
   static const Widget spacer = SizedBox(height: 20);
   static const Widget spacer15 = SizedBox(height: 15);
 
-  Widget textField(text) {
+  Widget textField({required String text, bool validatePassword = false, bool validateEmail = false}) {
     return Column(
       children: <Widget>[
         Align(
@@ -15,7 +15,20 @@ mixin Elements{
           ),
         ),
         TextFormField(
-          validator: null,
+          validator: (value){
+            if (value == null || value.isEmpty){
+              return "This field can not be empty";
+            }
+            if (validatePassword == true){
+              final passwordError = _validatePasswordLength(value);
+              if (passwordError != null) return passwordError;
+            }
+            if (validateEmail == true){
+               final emailError = _validateEmail(value);
+               if (emailError != null) return emailError;
+            }
+            return null;
+          },
         ),
       ],
     );
@@ -30,5 +43,20 @@ mixin Elements{
         "Back",
       ),
     );
+  }
+
+  String? _validatePasswordLength(String? value){
+    if (value == null || value.length < 7){
+      return "Password must be at least 7 characters long";
+    }
+    return null;
+  }
+
+  String? _validateEmail(String? value){
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    if (value == null || !emailRegex.hasMatch(value)){
+      return "This field must contain email";
+    }
+    return null;
   }
 }
